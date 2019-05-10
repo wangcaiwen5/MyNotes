@@ -107,8 +107,9 @@ AppBar({
   })
 ```
 
-**五.几个基本的组件 (Text、Image、Icon、Button 分布用于展示文字，图片，图标，按钮)----**
-*1.Text*
+**五.几个基本的组件 (Text、Image、Icon、Button 分布用于展示文字，图片，图标，按钮)
+**
+###### 1.Text
 ```java
 const Text(this.data, { // Text 需要展示的文字
     Key key,
@@ -173,7 +174,7 @@ class HomePage extends StatelessWidget {
 }
 ```
 *2.Image*
- Image 的构造函数:
+######  Image 的构造函数:
  ```java
 const Image({
     Key key,
