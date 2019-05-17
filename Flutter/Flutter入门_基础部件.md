@@ -198,8 +198,115 @@ const Image({
     this.filterQuality = FilterQuality.low,
   })
 ```
-
+在这之前，需要你先准备一张本地图片，然后在项目的根目录，也就是 lib 文件夹同层，创建一个新的文件夹，命名为 images，把你准备好的图片放到这个目录下。放好之后打开 pubspec.yaml 把图片资源文件注册下
+    # The following section is specific to Flutter.
+    flutter:
+    
+      # The following line ensures that the Material Icons font is
+      # included with your application, so that you can use the icons in
+      # the material Icons class.
+      uses-material-design: true
+    
+      # 这边注册资源文件，以后有图片文件也可以只注册 images 文件夹，会自动读取内部的文件
+      assets:
+        - images/ali.jpg
 撸代码:
+```dart
+class HomePage extends StatelessWidget {
+  final String _assetAli = 'images/ali.jpg';
+  final String _picUrl =
+      'https://timg05.bdimg.com/timg?wapbaike&quality=60&size=b1440_952&cut_x=143&cut_y=0&cut_w=1633&'
+      'cut_h=1080&sec=1349839550&di=cbbc175a45ccec5482ce2cff09a3ae34&'
+      'src=http://imgsrc.baidu.com/baike/pic/item/4afbfbedab64034f104872baa7c379310b551d80.jpg';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(),
+        body: Container(
+          padding: const EdgeInsets.only(top: 10.0),
+          child: Center(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              // 这种展示图片方式和下一种会有相同的效果
+              Image(image: AssetImage(_assetAli), width: 80.0, height: 80.0),
+              // 接下来加载图片都会使用这些比较方便的方法
+              Image.asset(_assetAli, width: 80.0, height: 80.0),
+              // 加载一张网络图片
+              Image.network(_picUrl,
+                  height: 80.0,
+                  // 横向重复
+                  repeat: ImageRepeat.repeatX,
+                  // MediaQuery.of(context).size 获取到的为上层容器的宽高
+                  width: MediaQuery.of(context).size.width),
+              // 通过设置混合模式，可以看到图片展示的样式已经修改
+              Image.asset(_assetAli,
+                  width: 80.0, height: 80.0, color: Colors.green, colorBlendMode: BlendMode.colorDodge),
+              // 会优先加载指定的 asset 图片，然后等网络图片读取成功后加载网络图片，会通过渐隐渐现方式展现
+              // cover 方式按照较小的边布满，较大的给切割
+              // contain 会按照最大的边布满，较小的会被留白
+              // fill 会把较大的一边压缩
+              // fitHeight, fitWidth 分别按照长宽来布满
+              FadeInImage.assetNetwork(
+                  placeholder: _assetAli, image: _picUrl, width: 120.0, height: 120.0, fit: BoxFit.cover),
+              // Icon 相对属性少了很多，需要传入一个 IconData 实例，flutter 提供了很多图标，
+              // 但是实际情况我们需要加入我们自己的图标，这边再埋坑【坑3】
+              // size 为图标显示的大小，color 为图标的颜色，这边通过 Theme 获取主题色调
+              Icon(Icons.android, size: 40.0, color: Theme.of(context).primaryColorDark)
+            ],
+          )),
+        ));
+  }
+}
+```
+
+Flutter 提供了各种类型的 Button 几乎是大同小异的，这边就抽取一些比较常用的展示下效果，常用的主要有 RaisedButton 、FlatButton、IconButton、OutlineButton、MaterialButton、FloatActionButton、FloatingActionButton.extended
+
+
+Button 都有一个 onPress 参数，是 VoidCallback 类型的参数，通过查看源码可以知道 VoidCallback 是无参无返回值的一种类型参数。如果该参数传入的值为 null 那么这个按钮的就不可点击状态，无点击效果，等会可以在例子中查看。还有就是 child 参数，这里就是传入你需要展示的内容，比如 Text、Icon 等等。别的参数基本可以通过参数名了解:
+
+```dart
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Container(
+        padding: const EdgeInsets.only(top: 10.0),
+        child: Center(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                print('This is a Rased Button can be clicked');
+              },
+              child: Text('Raised Enable'),
+            ),
+            RaisedButton(onPressed: null, child: Text('Raised Disable')),
+            FlatButton(
+              onPressed: () => print('This is a Flat Button can be clicker'),
+              child: Text('Flat Enable'),
+            ),
+            FlatButton(onPressed: null, child: Text('Flat Disable')),
+            IconButton(icon: Icon(Icons.android), onPressed: () {}),
+            IconButton(icon: Icon(Icons.android), onPressed: null),
+            MaterialButton(onPressed: () {}, child: Text('Material Enable')),
+            MaterialButton(onPressed: null, child: Text('Material Disable')),
+            OutlineButton(onPressed: () {}, child: Text('Outline Enable')),
+            OutlineButton(onPressed: null, child: Text('Outline Enable')),
+          ],
+        )),
+      ),
+      floatingActionButton:
+          FloatingActionButton.extended(onPressed: () {}, icon: Icon(Icons.android), label: Text('Android')),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    );
+  }
+}
+```
+
 
 
 
