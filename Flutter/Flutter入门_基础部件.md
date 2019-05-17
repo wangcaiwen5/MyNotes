@@ -1,3 +1,7 @@
+
+
+[flutter安装指南博客](https://mp.weixin.qq.com/s?__biz=MzIwMzYwMTk1NA==&mid=2247490144&idx=1&sn=e1f74f657cce4f70169e52de96526140&chksm=96cdbb2da1ba323b4a191e6804e667d55bcde4c80d07c93a4f34fc3641c3a4c270ee049f3939&scene=21#wechat_redirect "flutter安装指南博客")
+
 #### Flutter入门基础部件
 **一.简单了解**
 新建 flutter 项目后，可以看到 lib 下的 main.dart 中 void main() => runApp(MyApp());这句就是程序的入口了,这里可以简单看下源码
