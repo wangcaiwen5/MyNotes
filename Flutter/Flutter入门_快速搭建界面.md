@@ -239,9 +239,48 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   }
 }
 ```
-1
+效果图如下:
+![效果图](https://raw.githubusercontent.com/wangcaiwen5/MyNotes/master/Image/44444.gif "效果图")
 
 
+Scaffold 能够使我们快速去搭建一个界面，但是，并不是所有的界面都需要 AppBar 这个标题，那么我们就不会传入 appBar 的属性，我们注释 _HomePageState 中 Scaffold 的 appBar 传入值，把 body 传入的 PageView 修改成单个 TabChangePage ，然后把 TabChangePage 这个类做下修改，把 Container 的 aligment 属性也注释了，这样显示的内容就会显示在左上角
+
+```dart
+// _HomePageState
+// ..
+@override
+  Widget build(BuildContext context) {
+    return Scaffold(body: TabChangePage(content: 'Content'));
+  }
+
+class TabChangePage extends StatelessWidget {
+  final String content;
+    
+  TabChangePage({Key key, this.content}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(child: Text(content, style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 30.0)));
+  }
+}
+```
+
+
+然后运行下，「**，文字怎么被状态栏给挡了...」
+不要慌，静下心喝杯茶，眺望下远方，这里就需要用 SafeArea 来处理了，在 TabChangePage 的 Container 外层加一层 SafeArea
+
+```dart
+@override
+  Widget build(BuildContext context) {
+    return SafeArea(
+        child:
+            Container(child: Text(content, style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 30.0))));
+  }
+```
+
+SafeArea 的用途[我用翻译软件翻译的,哈哈]:
+翻译过来大概就是「给子部件和系统点击无效区域留有足够空间，比如状态栏和系统导航栏」
+SafeArea 可以很好解决刘海屏覆盖页面内容的问题
 
 
 
